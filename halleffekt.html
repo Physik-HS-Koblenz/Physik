@@ -1,0 +1,426 @@
+<p></p>
+<!-- Babylon.js -->
+<p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+<script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+<script src="https://preview.babylonjs.com/ammo.js"></script>
+<script src="https://preview.babylonjs.com/cannon.js"></script>
+<script src="https://preview.babylonjs.com/Oimo.js"></script>
+<script src="https://preview.babylonjs.com/earcut.min.js"></script>
+<script src="https://preview.babylonjs.com/babylon.js"></script>
+<script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+<script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+<script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+<script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+<script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+<script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+<script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+</p>
+<p><canvas id="renderCanvas" width="1000" height="700"><span id="o_button_saveclose"><a class="btn btn-default o_button_dirty" id="o_fi1250751971" onclick="o_ffEvent('ofo_1250751953','ofo_1250751953_dispatchuri','o_fi1250751971','ofo_1250751953_eventval','2'); " role="button"></a>Speichern und schliessen</span></canvas></p>
+<p>
+<script>// <![CDATA[
+const git_repo="https://raw.githubusercontent.com/Physik-HS-Koblenz/Physik/master/"
+const Help_text="youe can add here your help text"
+
+var canvas = document.getElementById("renderCanvas");
+
+        var startRenderLoop = function (engine, canvas) {
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        }
+
+        var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
+        var createScene = function () {
+    var elect;
+    var scene = new BABYLON.Scene(engine);
+    var hel=1;
+    var matti = new BABYLON.StandardMaterial(scene);
+    matti.alpha = 1;
+    matti.diffuseColor = new BABYLON.Color3(0.35, 0.35, 0.35);
+
+    //Adding a light
+    var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(20, 20, 100), scene);
+
+    //Adding an Arc Rotate Camera
+    var camera = new BABYLON.ArcRotateCamera("Camera",-1, 1, 3, BABYLON.Vector3.Zero(), scene);
+    camera.attachControl(canvas, false);
+
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), scene);
+        	light.intensity = 0.4;
+        	light.specular = BABYLON.Color3.Black();
+        
+            var light2 = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(0, 0, 0), scene);
+            light2.position = new BABYLON.Vector3(0, 50, 5);
+
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 5, height: 5});
+    ground.material = new BABYLON.GridMaterial("groundMat");
+    ground.material.backFaceCulling = false;
+    ground.position.y = -0.6;
+    camera.target = ground;
+    camera.wheelPrecision = 250;
+
+    var turnrate=0.025;
+
+    var meshSpriteMtl = new BABYLON.StandardMaterial("mtl", scene);
+            meshSpriteMtl.diffuseTexture = new BABYLON.Texture(
+                git_repo+"batery.jpg",
+                    scene
+                );
+                meshSpriteMtl.diffuseTexture.hasAlpha = true;
+
+    var meshSpriteMtl2 = new BABYLON.StandardMaterial("mtl", scene);
+            meshSpriteMtl2.diffuseTexture = new BABYLON.Texture(
+                git_repo+"uo.jpg",
+                    scene
+                );
+                meshSpriteMtl2.diffuseTexture.hasAlpha = true;
+                meshSpriteMtl2.diffuseTexture.vScale = 20;
+    
+    var meshSpriteMtl3 = new BABYLON.StandardMaterial("mtl", scene);
+            meshSpriteMtl3.diffuseTexture = new BABYLON.Texture(
+                git_repo+"uo.jpg",
+                    scene
+                );
+                meshSpriteMtl3.diffuseTexture.hasAlpha = true;
+                meshSpriteMtl3.diffuseTexture.vScale = 20;
+
+    var meshSpriteMtl4 = new BABYLON.StandardMaterial("mtl", scene);
+            meshSpriteMtl4.diffuseTexture = new BABYLON.Texture(
+                git_repo+"voltmeter.PNG",
+                    scene
+                );
+                meshSpriteMtl4.diffuseTexture.hasAlpha = true;
+
+    // The first parameter can be used to specify which mesh to import. Here we import all meshes
+    BABYLON.SceneLoader.ImportMesh("", git_repo, "magent.babylon", scene, function (newMeshes) {
+        // Set the target of the camera to the first imported mesh
+        var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);
+        myMaterial.alpha = 0.6;
+        newMeshes[0].material.subMaterials[0]=myMaterial;
+        var myMaterial2 = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial2.alpha = 0.6;
+        myMaterial2.diffuseColor = new BABYLON.Color3(0, 1, 0);
+        newMeshes[0].material.subMaterials[1]=myMaterial2;
+        var myMaterial3 = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial3.alpha = 0.6;
+        newMeshes[0].material.subMaterials[12]=myMaterial3;
+        var myMaterial4 = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial4.diffuseColor = new BABYLON.Color3(0.69, 0.69, 0.69);
+        newMeshes[0].material.subMaterials[4]=myMaterial4;
+        var myMaterial5 = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial5.diffuseColor = new BABYLON.Color3(1, 1, 1);
+        newMeshes[0].material.subMaterials[9]=myMaterial5;
+        var myMaterial6 = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial6.diffuseColor = new BABYLON.Color3(0.35, 0.73, 0.88);
+        newMeshes[0].material.subMaterials[10]=myMaterial6;
+        var myMaterial7 = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial7.diffuseColor = new BABYLON.Color3(0.88, 0.35, 0.35);
+        newMeshes[0].material.subMaterials[11]=myMaterial7;
+        var myMaterial8 = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial8.diffuseColor = new BABYLON.Color3(0.78, 1, 0);
+        var myMaterial9 = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial9.diffuseColor = new BABYLON.Color3(1, 0.82, 0.02);
+        newMeshes[0].material.subMaterials[3]=myMaterial9;
+        newMeshes[0].material.subMaterials[8]=meshSpriteMtl;
+        newMeshes[0].material.subMaterials[5]=meshSpriteMtl4;
+        newMeshes[0].material.subMaterials[6]=meshSpriteMtl2;
+        newMeshes[0].material.subMaterials[7]=meshSpriteMtl3;
+        base = newMeshes[0];
+        newMeshes[0].scaling.scaleInPlace(1);
+        engine.hideLoadingUI();
+    });
+
+    var arrow
+    BABYLON.SceneLoader.ImportMesh("", git_repo, "arrow.babylon", scene, function (newMeshes) {
+        // Set the target of the camera to the first imported mesh
+        arrow = newMeshes[0];
+        newMeshes[0].scaling.scaleInPlace(1);
+        engine.hideLoadingUI();
+        arrow.scaling.x = 0.7;
+        arrow.scaling.z = 0.7;
+    });
+
+    var needle
+    BABYLON.SceneLoader.ImportMesh("", git_repo, "needle.babylon", scene, function (newMeshes) {
+        // Set the target of the camera to the first imported mesh
+        needle = newMeshes[0];
+        newMeshes[0].scaling.scaleInPlace(1);
+        engine.hideLoadingUI();
+        needle.position.x = 1.2;
+        needle.position.z = -0.2;
+    });
+
+    var elects = new Array(8);
+    BABYLON.SceneLoader.ImportMesh("", git_repo, "+.babylon", scene, function (newMeshes) {
+        // Set the target of the camera to the first imported mesh
+        elects[0] = newMeshes[0];
+        newMeshes[0].scaling.scaleInPlace(0.03);
+        var myMaterial = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial.diffuseColor = new BABYLON.Color3(1, 1, 1);
+        myMaterial.alpha = 0.65;
+        newMeshes[0].material.subMaterials[0]=myMaterial;
+        var myMaterial2 = new BABYLON.StandardMaterial("myMaterial", scene);
+        myMaterial2.alpha = 0.9;
+        myMaterial2.diffuseColor = new BABYLON.Color3(0, 1, 0);
+        newMeshes[0].material.subMaterials[1]=myMaterial2;
+        for ( let i= 0; i < 8 ; i++){
+            elects[i]= elects[0].clone("");
+        };
+    });
+
+    
+    
+    
+
+    var rate =0;
+    const options=[];
+    var quadraticBezierCurve=[];
+    // CURVE3 : Bezier Quadratic Curve
+    for ( let i= 0; i < 8 ; i++){
+    options.push({
+    points: BABYLON.Curve3.CreateQuadraticBezier(new BABYLON.Vector3(0.036, 0.05, -0.51),
+        new BABYLON.Vector3(0.036, 0.05, 0.48),new BABYLON.Vector3(0.036, 0.05, 0.48),25).getPoints(), //vec3 array,
+    updatable: true
+    });
+    quadraticBezierCurve.push(BABYLON.MeshBuilder.CreateLines("qbezier", options[i], scene));
+    quadraticBezierCurve[i].color = new BABYLON.Color3(0.33, 0.72, 0.89);
+    }
+    var spann = 8*0.022
+    var mag = 0.077
+    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+    
+    var panel3 = new BABYLON.GUI.StackPanel();
+
+                var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+                var panel3 = new BABYLON.GUI.StackPanel();
+                panel3.width = "240px";
+                panel3.fontSize = "14px";
+                panel3.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                panel3.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_CENTER;
+                //panel3.isVertical = true;
+                advancedTexture.addControl(panel3);
+
+                var checkbox = new BABYLON.GUI.Checkbox();
+                checkbox.width = "20px";
+                checkbox.height = "20px";
+                checkbox.isChecked = false;
+                checkbox.color = "green";
+                checkbox.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                checkbox.onIsCheckedChangedObservable.add(function(value) {
+                    if(value){
+                        lab.alpha = 0.5;
+                    }
+                    else{
+                        lab.alpha = 0;
+                    }
+                });
+                panel3.addControl(checkbox);    
+
+                var help1 = new BABYLON.GUI.TextBlock();
+                help1.text = "help";
+                help1.width = "220px";
+                help1.height = "20px";
+                help1.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                help1.color = "white";
+                panel3.addControl(help1);
+
+                header = new BABYLON.GUI.TextBlock();
+                header.text = "Spannung : 16 V";
+                header.height = "40px";
+                header.color = "white";
+                header.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                header.paddingTop = "10px";
+                panel3.addControl(header);
+                var slider = new BABYLON.GUI.Slider();
+                slider.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                slider.minimum = 0; 
+                slider.maximum = 8;
+                slider.color = "green";
+                slider.value = 8;
+                slider.height = "20px";
+                slider.width = "200px";
+                panel3.addControl(slider); 
+                
+                slider.onValueChangedObservable.add(function(v){
+                    spann=v*0.022;
+                    header.text = "Spannung : "+(v*2).toPrecision(2)+" V";
+                    
+                })
+
+                header2 = new BABYLON.GUI.TextBlock();
+                header2.text = "Magnet : 7 T";
+                header2.height = "40px";
+                header2.color = "white";
+                header2.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                header2.paddingTop = "10px";
+                panel3.addControl(header2);
+
+                
+                var slider2 = new BABYLON.GUI.Slider();
+                slider2.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                slider2.minimum = 0; 
+                slider2.maximum = 8;
+                slider2.color = "green";
+                slider2.value = 7;
+                slider2.height = "20px";
+                slider2.width = "200px";
+                panel3.addControl(slider2); 
+                slider2.onValueChangedObservable.add(function(v){
+                    
+                    mag=v*0.011;
+                    header2.text = "Magnet : "+v.toPrecision(2)+" T";
+                    arrow.scaling.x = v*0.1;
+                    arrow.scaling.z = v*0.1;
+                })
+
+                var header3 = new BABYLON.GUI.TextBlock();
+                header3.text = "Voltmeter : 0 µV";
+                header3.height = "60px";
+                header3.color = "white";
+                header3.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                header3.paddingTop = "10px";
+                panel3.addControl(header3);
+
+            var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "simulate");
+                button1.width = "150px"
+                button1.height = "40px";
+                button1.color = "white";
+                button1.cornerRadius = 20;
+                button1.background = "green";
+                button1.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
+                button1.onPointerUpObservable.add(function() {
+                    let a = 0;
+                    for ( let i= 0; i < 8 ; i++){
+                        elects[i].setEnabled(false);
+                        quadraticBezierCurve[i].setEnabled(false);
+                    }
+                    setTimeout(async () => {
+                    slider.isEnabled = false;
+                    slider2.isEnabled = false;
+                    button1.isEnabled = false;
+                    for ( let i= 7; i >= 0 ; i--){
+                    if(8-mag/0.011<i){
+                    offset=0.49-mag*spann*i*i
+                    options[i].points = BABYLON.Curve3.CreateQuadraticBezier(new BABYLON.Vector3(0.036, 0.05, -0.51),new BABYLON.Vector3(0.036, 0.05,offset ),
+                        new BABYLON.Vector3(0.27, 0.05, offset),25).getPoints();
+                    /*keysPosition.push({
+                        frame: i,
+                        value: BABYLON.Curve3.CreateQuadraticBezier(new BABYLON.Vector3(0.036, 0.05, -0.51),new BABYLON.Vector3(0.036, 0.05,offset ),
+                        new BABYLON.Vector3(0.27, 0.05, offset),30).getPoints()
+                    });*/
+                    options[i].instance = quadraticBezierCurve[i];
+                    a +=spann*mag/(8);
+                    }
+                    else{
+                    options[i].points = BABYLON.Curve3.CreateQuadraticBezier(new BABYLON.Vector3(0.036, 0.05, -0.51),new BABYLON.Vector3(0.036, 0.05, 0.48),
+                        new BABYLON.Vector3(0.036, 0.05, 0.48),25).getPoints();
+                    options[i].instance = quadraticBezierCurve[i];
+                    
+                    }
+                    var animationPosition = new BABYLON.Animation("animPos", "position", 25, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);  
+                    var keysPosition = []; 
+                    for(p = 0; p < options[i].points.length; p++) {
+                        keysPosition.push({
+                            frame: p,
+                            value: options[i].points[p]
+                        });
+                    }
+                    animationPosition.setKeys(keysPosition);
+                    elects[i].animations.push(animationPosition);
+                    
+                    elects[i].setEnabled(true);
+                    var anim = scene.beginAnimation(elects[i], 0, 25, false);
+                    await anim.waitAsync();
+                    quadraticBezierCurve[i] = BABYLON.MeshBuilder.CreateLines("lines", options[i]);
+                    quadraticBezierCurve[i].setEnabled(true);
+                    
+                    needle.rotation = new BABYLON.Vector3(0, a*100-Math.PI / 4, 0);
+                    header3.text = "Voltmeter : "+ (a*2500).toPrecision(2) + " µV";
+                    }
+                    slider.isEnabled = true;
+                    slider2.isEnabled = true;
+                    button1.isEnabled = true;
+                    });
+                });
+                panel3.addControl(button1);  
+
+
+                ttt = new BABYLON.GUI.TextBlock();
+                ttt.text = "made by M. Aziz Jaiem for HS Koblenz";
+                ttt.fontSize = "14px";
+                ttt.height = "20px";
+                ttt.color = "white";
+                ttt.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                ttt.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_BOTTOM;
+                var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+                advancedTexture.addControl(ttt); 
+
+    var addva = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("ui1");
+                var lab = new BABYLON.GUI.Rectangle("help");
+                lab.background = "black"
+                lab.height = "200px";
+                lab.alpha = 0;
+                lab.width = "400px";
+                lab.cornerRadius = 20;
+                lab.thickness = 0;
+                lab.linkOffsetY = 30;
+                lab.top = "10%";
+                lab.zIndex = 1;
+                lab.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;   
+                addva.addControl(lab); 
+
+                text1 = new BABYLON.GUI.TextBlock();
+                text1.text = Help_text;
+                text1.color = "white";
+                text1.textHorizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+                lab.addControl(text1); 
+
+    
+
+    /*const animateMeshSprite = setInterval(function () {
+                    meshSpriteMtl2.diffuseTexture.vOffset += -spann;
+                    meshSpriteMtl3.diffuseTexture.vOffset += spann;
+                    needle.rotation = new BABYLON.Vector3(0, spann*mag*100-Math.PI / 4, 0);
+                    header3.text = "Voltmeter : "+ (spann*mag*2500).toPrecision(2) + " µV";
+                }, 1);*/
+
+    // Move the light with the camera
+    scene.registerBeforeRender(function () {
+        light.position = camera.position;
+    });
+
+    return scene;
+}
+                window.initFunction = async function() {
+                    
+                    
+                    var asyncEngineCreation = async function() {
+                        try {
+                        return createDefaultEngine();
+                        } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                        }
+                    }
+
+                    window.engine = await asyncEngineCreation();
+        if (!engine) throw 'engine should not be null.';
+        startRenderLoop(engine, canvas);
+        window.scene = createScene();};
+        initFunction().then(() => {sceneToRender = scene                    
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            canvas.width = window.innerWidth;
+            engine.resize();
+        });
+// ]]></script>
+</p>
