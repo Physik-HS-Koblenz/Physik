@@ -309,7 +309,7 @@ var canvas = document.getElementById("renderCanvas");
                     if(8-mag/0.011<i){
                     offset=0.49-mag*spann*i*i
                     options[i].points = BABYLON.Curve3.CreateQuadraticBezier(new BABYLON.Vector3(0.036, 0.05, -0.51),new BABYLON.Vector3(0.036, 0.05,offset ),
-                        new BABYLON.Vector3(0.27, 0.05, offset),25).getPoints();
+                        new BABYLON.Vector3(-0.21, 0.05, offset),25).getPoints();
                     /*keysPosition.push({
                         frame: i,
                         value: BABYLON.Curve3.CreateQuadraticBezier(new BABYLON.Vector3(0.036, 0.05, -0.51),new BABYLON.Vector3(0.036, 0.05,offset ),
